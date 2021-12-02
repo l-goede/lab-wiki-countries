@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.flagLink {
+  width: 7rem;
+  margin-bottom: 0.3rem;
+}
+
+.flx-clm {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  border: 2px solid black;
+  padding: 3rem;
+}
+
+.flx-item {
+  display: flex;
+  justify-content: center;
+  width: 8rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.2rem;
+}

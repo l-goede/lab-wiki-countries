@@ -1,40 +1,46 @@
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
 function CountryDetails() {
-  const { id } = useParams();
   const [detail, setDetail] = useState(null);
+  const { alpha3Code } = useParams();
 
   useEffect(() => {
-    async function getData() {
-      let response = await axios.get(
-        `https://restcountries.com/v3.1/all/${id}`
+    (async () => {
+      let { data } = await axios.get(
+        `https://restcountries.com/v3.1/alpha/${alpha3Code}/`
       );
-      console.log(response);
 
       let country = {
-        image: response.data[0].flags.svg,
-        name: response.data[0].name.common,
-        capital: response.data[0].capital,
-        area: response.data[0].area,
+        alpha3Code: alpha3Code,
+        name: data[0].name.common,
+        capital: data[0].capital[0],
+        area: data[0].area,
+        population: data[0].population,
+        borders: data[0].borders,
       };
+
       setDetail(country);
-    }
-    getData();
-  }, [id]);
+    })();
+  }, [alpha3Code]);
 
   if (!detail) {
-    return <p>Loading detail page...</p>;
+    return <p>Loading . . .</p>;
   }
-  console.log(detail);
+
   return (
     <div>
-      <h1>Detail Page</h1>
-      <img src={detail.image} alt="" />
-      <h1>{detail.name}</h1>
+      <h2>{detail.name}</h2>
       <p>Capital: {detail.capital}</p>
+      <p>Population: {detail.population}</p>
       <p>Area: {detail.area}</p>
+      <p> Borders:</p>
+      <ul>
+        {detail.borders.map((elem, i) => {
+          return <li key={i}>{elem}</li>;
+        })}
+      </ul>
     </div>
   );
 }
